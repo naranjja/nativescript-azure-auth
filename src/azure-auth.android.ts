@@ -56,7 +56,10 @@ export class AzureAuth {
             console.log(`${CONSOLE_TAG} Verified login for user: ${result.getUserInfo().getDisplayableId()}`);
             console.log(`${CONSOLE_TAG} User ID: ${this.userId}`);
             console.log(`${CONSOLE_TAG} Token expiry: ${result.getExpiresOn()}`);
-            resolve(result.getAccessToken());
+            resolve({
+              token: result.getAccessToken(),
+              email: result.getUserInfo().getDisplayableId(),
+            });
           },
           onError(error: javalangException): void {
             const CONSOLE_TAG = "[Azure Auth]:";
