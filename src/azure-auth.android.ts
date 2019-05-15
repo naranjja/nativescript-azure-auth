@@ -32,12 +32,12 @@ export class AzureAuth {
     });
   }
 
-  public login(clearCache?: boolean): Promise<string> {
+  public login(clearCache?: boolean) {
     if (typeof clearCache === undefined || clearCache) {
       this.clearCache();
       console.log(`Clearing cache for clientID: ${this.clientId}`);
     }
-    return new Promise<string>((resolve: any, reject: any) => {
+    return new Promise((resolve: any, reject: any) => {
       this.context.acquireToken(
         this.activity,
         this.resourceId,

@@ -23,12 +23,12 @@ export class AzureAuth {
         this.context = ADAuthenticationContext.authenticationContextWithAuthorityError(this.authority, this.authenticationError);
     }
 
-    public login(clearCache?: boolean): Promise<string> {
+    public login(clearCache?: boolean) {
         if (typeof clearCache === undefined || clearCache) {
             console.log(`Clearing cache for clientID: ${this.clientId}`);
             this.clearCache();
         }
-        return new Promise<string>((resolve, reject) => {
+        return new Promise((resolve, reject) => {
             this.context
             .acquireTokenWithResourceClientIdRedirectUriPromptBehaviorUserIdentifierExtraQueryParametersCompletionBlock(
                 this.resourceId,
@@ -50,7 +50,10 @@ export class AzureAuth {
                         console.log(`${this.CONSOLE_TAG} Verified login for user: ${authResult.tokenCacheItem.userInformation.uniqueName}`);
                         console.log(`${this.CONSOLE_TAG} User ID: ${this.userId}`);
                         console.log(`${this.CONSOLE_TAG} Token expiry: ${authResult.tokenCacheItem.expiresOn.toString()}`);
-                        resolve(authResult.accessToken);
+                        resolve({
+                            token: authResult.accessToken,
+                            email: authResult.tokenCacheItem.userInformation.uniqueName,
+                        });
                     }
                 }
             );
